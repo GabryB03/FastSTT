@@ -30,6 +30,8 @@
             this.guna2TextBox2 = new Guna.UI2.WinForms.Guna2TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2TrackBar1 = new Guna.UI2.WinForms.Guna2TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // guna2ControlBox1
@@ -349,7 +351,7 @@
             this.guna2Button2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button2.ForeColor = System.Drawing.Color.White;
             this.guna2Button2.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(91)))), ((int)(((byte)(153)))));
-            this.guna2Button2.Location = new System.Drawing.Point(384, 248);
+            this.guna2Button2.Location = new System.Drawing.Point(384, 310);
             this.guna2Button2.Name = "guna2Button2";
             this.guna2Button2.Size = new System.Drawing.Size(40, 36);
             this.guna2Button2.TabIndex = 11;
@@ -370,7 +372,7 @@
             this.guna2TextBox2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2TextBox2.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.guna2TextBox2.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            this.guna2TextBox2.Location = new System.Drawing.Point(27, 248);
+            this.guna2TextBox2.Location = new System.Drawing.Point(27, 310);
             this.guna2TextBox2.Name = "guna2TextBox2";
             this.guna2TextBox2.PasswordChar = '\0';
             this.guna2TextBox2.PlaceholderForeColor = System.Drawing.SystemColors.ControlDark;
@@ -395,12 +397,33 @@
             this.guna2Button3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button3.ForeColor = System.Drawing.Color.White;
             this.guna2Button3.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(91)))), ((int)(((byte)(153)))));
-            this.guna2Button3.Location = new System.Drawing.Point(27, 294);
+            this.guna2Button3.Location = new System.Drawing.Point(27, 356);
             this.guna2Button3.Name = "guna2Button3";
             this.guna2Button3.Size = new System.Drawing.Size(347, 36);
             this.guna2Button3.TabIndex = 12;
             this.guna2Button3.Text = "Start transcription process";
             this.guna2Button3.Click += new System.EventHandler(this.guna2Button3_Click);
+            // 
+            // guna2TrackBar1
+            // 
+            this.guna2TrackBar1.Location = new System.Drawing.Point(27, 248);
+            this.guna2TrackBar1.Maximum = 10;
+            this.guna2TrackBar1.Minimum = 1;
+            this.guna2TrackBar1.Name = "guna2TrackBar1";
+            this.guna2TrackBar1.Size = new System.Drawing.Size(347, 23);
+            this.guna2TrackBar1.TabIndex = 13;
+            this.guna2TrackBar1.ThumbColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.guna2TrackBar1.Value = 1;
+            this.guna2TrackBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.guna2TrackBar1_Scroll);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 282);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(121, 15);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Model precision: 1/10";
             // 
             // MainForm
             // 
@@ -409,7 +432,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(446, 350);
+            this.ClientSize = new System.Drawing.Size(446, 417);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.guna2TrackBar1);
             this.Controls.Add(this.guna2Button3);
             this.Controls.Add(this.guna2Button2);
             this.Controls.Add(this.guna2TextBox2);
@@ -452,4 +477,6 @@
     private Guna.UI2.WinForms.Guna2TextBox guna2TextBox2;
     private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     private Guna.UI2.WinForms.Guna2Button guna2Button3;
+    private Guna.UI2.WinForms.Guna2TrackBar guna2TrackBar1;
+    private System.Windows.Forms.Label label1;
 }

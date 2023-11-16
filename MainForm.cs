@@ -21,10 +21,12 @@ public partial class MainForm : MetroForm
         "input.mp3",
         "enable_report_timings.txt",
         "disable_report_timings.txt",
-        "reload_model.txt"
+        "reload_model.txt",
+        "precision.txt"
     };
 
     private Process _inferWaiter;
+    private string _previousModel = "", _previousDevice = "", _previousComputeType = "";
 
     private void DeleteTempFiles()
     {
@@ -40,9 +42,11 @@ public partial class MainForm : MetroForm
     public MainForm()
     {
         InitializeComponent();
+
         CloseAllPythonInstances();
         DeleteTempFiles();
         StartInferWaiter();
+
         guna2ComboBox1.SelectedIndex = guna2ComboBox1.Items.Count - 1;
         guna2ComboBox2.SelectedIndex = 0;
     }
@@ -167,6 +171,78 @@ public partial class MainForm : MetroForm
         }
     }
 
+    private string GetSelectedModel()
+    {
+        switch (guna2ComboBox1.SelectedIndex)
+        {
+            case 0:
+                return "tiny.en";
+            case 1:
+                return "base.en";
+            case 2:
+                return "small.en";
+            case 3:
+                return "medium.en";
+            case 4:
+                return "tiny";
+            case 5:
+                return "base";
+            case 6:
+                return "small";
+            case 7:
+                return "medium";
+            case 8:
+                return "large-v1";
+            case 9:
+                return "large-v2";
+            case 10:
+                return "large-v3";
+        }
+
+        return "large-v3";
+    }
+
+    private string GetSelectedLanguage()
+    {
+        return guna2ComboBox2.SelectedItem.ToString().Split('(')[1].Split(')')[0];
+    }
+
+    private string GetFloatPrecision()
+    {
+        if (guna2CheckBox3.Checked)
+        {
+            if (guna2CheckBox4.Checked)
+            {
+                return "float16";
+            }
+            else
+            {
+                return "int8_float16";
+            }
+        }
+        else
+        {
+            if (guna2CheckBox4.Checked)
+            {
+                return "float32";
+            }
+            else
+            {
+                return "int8";
+            }
+        }
+    }
+
+    private void guna2TrackBar1_Scroll(object sender, ScrollEventArgs e)
+    {
+        label1.Text = $"Model precision: {guna2TrackBar1.Value}/10";
+    }
+
+    private string GetDevice()
+    {
+        return guna2CheckBox3.Checked ? "cuda" : "cpu";
+    }
+
     private void guna2Button3_Click(object sender, EventArgs e)
     {
         if (!File.Exists(openFileDialog1.FileName))
@@ -186,37 +262,26 @@ public partial class MainForm : MetroForm
         }
 
         DeleteTempFiles();
+
+        string model = GetSelectedModel(), device = GetDevice(), computeType = GetFloatPrecision();
+
+        CreateRuntimeFile("precision", guna2TrackBar1.Value.ToString());
+        CreateRuntimeFile("language", GetSelectedLanguage());
         CreateRuntimeFile(guna2CheckBox1.Checked ? "enable_auto_language_detect" : "disable_auto_language_detect");
         CreateRuntimeFile(guna2CheckBox2.Checked ? "enable_report_timings" : "disable_report_timings");
-        CreateRuntimeFile("device", guna2CheckBox3.Checked ? "cuda" : "cpu");
 
-        string floatPrecision = "";
+        CreateRuntimeFile("model", model);
+        CreateRuntimeFile("device", device);
+        CreateRuntimeFile("compute_type", computeType);
 
-        if (guna2CheckBox3.Checked)
+        if (model != _previousModel || device != _previousDevice || computeType != _previousComputeType)
         {
-            if (guna2CheckBox4.Checked)
-            {
-                floatPrecision = "float16";
-            }
-            else
-            {
-                floatPrecision = "int8_float16";
-            }
-        }
-        else
-        {
-            if (guna2CheckBox4.Checked)
-            {
-                floatPrecision = "float32";
-            }
-            else
-            {
-                floatPrecision = "int8";
-            }
+            CreateRuntimeFile("reload_model");
         }
 
-        CreateRuntimeFile("compute_type", floatPrecision);
-        CreateRuntimeFile("reload_model");
+        _previousModel = model;
+        _previousDevice = device;
+        _previousComputeType = computeType;
 
         CompressAudioFile(Path.GetFullPath(guna2TextBox1.Text), Path.GetFullPath("input.mp3"));
 
